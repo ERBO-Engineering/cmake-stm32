@@ -10,3 +10,7 @@
 2. `cmake -DCMAKE_TOOLCHAIN_FILE=../arm-none-eabi-gcc.cmake ..`
 3. `cmake --build . -- -j 16`
 4. enjoy
+
+
+Fallback source:
+https://dev.to/younup/cmake-on-stm32-the-beginning-3766
