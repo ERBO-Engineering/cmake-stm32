@@ -1,0 +1,11 @@
+{
+  "cmake.generator": "Unix Makefiles",
+  "cmake.configureEnvironment": {
+    "CMAKE_EXPORT_COMPILE_COMMANDS": "on"
+  },
+  "C_Cpp.default.intelliSenseMode": "gcc-arm",
+  "files.associations": {
+    "stm32f4xx_hal.h": "c"
+  },
+  "cortex-debug.gdbPath": "arm-none-eabi-gdb"
+}
