@@ -2,19 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "cortex-debug",
-      "type": "cortex-debug",
-      "request": "launch",
-      "cwd": "${workspaceRoot}/build",
+      "name": "Cortex Debug",
+      "cwd": "${workspaceRoot}",
       "executable": "${workspaceRoot}/build/${workspaceFolderBasename}.elf",
+      "request": "launch",
+      "type": "cortex-debug",
       "servertype": "openocd",
-      "interface": "swd",
-      "device": "stlink",
-      "runToMain": true,
-      "configFiles": ["interface/stlink-v2.cfg", "target/stm32f4x.cfg"],
-      "svdFile": "${workspaceFolder}/debug-files/STM32F411.svd",
-      "preLaunchTask": "build",
+      "device": "STM32F411VE",
+      "configFiles": ["interface/stlink.cfg", "target/stm32f4x.cfg"],
+      "preLaunchTask": "flash",
       "showDevDebugOutput": "raw",
+      "svdFile": "${workspaceRoot}/debug-files/STM32F411.svd"
     }
   ]
 }

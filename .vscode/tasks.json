@@ -17,12 +17,13 @@
     },
     {
       "type": "shell",
-      "label": "Flash program",
+      "label": "flash",
       "command": "st-flash",
       "args": ["write", "${workspaceFolderBasename}.bin", "0x8000000"],
       "options": {
         "cwd": "${workspaceFolder}/build"
       },
+      "dependsOn": "build",
       "problemMatcher": []
     }
   ]
