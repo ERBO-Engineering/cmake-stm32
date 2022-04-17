@@ -6,13 +6,17 @@
  * make sure cmake,make,arm-none-eabi-gcc are reachable from path
  * openocd 0.11.0 (https://github.com/openocd-org/openocd/tree/v0.11.0)
 
-**Run:**
+**Run: without vscode magic ;)**
 1. `git submodule update --init`
-1. `mkdir build && cd build`
-2. `cmake ..`
-3. `cmake --build . -- -j 16`
-4. enjoy
+2. `mkdir build && cd build`
+3. `cmake ..`
+4. `cmake --build . -- -j 16`
+5. enjoy
 
+**Run: With vscode magic**
+
+1. To run and forget (execute the flash task)
+2. To debug F5
 
 Fallback source:
 https://dev.to/younup/cmake-on-stm32-the-beginning-3766
