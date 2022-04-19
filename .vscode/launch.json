@@ -9,7 +9,10 @@
       "type": "cortex-debug",
       "servertype": "openocd",
       "device": "STM32F411VE",
-      "configFiles": ["interface/stlink.cfg", "target/stm32f4x.cfg"],
+      "configFiles": [
+        "interface/stlink.cfg",
+        "target/stm32f4x.cfg"
+      ],
       "preLaunchTask": "flash",
       "showDevDebugOutput": "raw",
       "svdFile": "${workspaceRoot}/debug-files/STM32F411.svd"

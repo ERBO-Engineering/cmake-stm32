@@ -3,7 +3,9 @@
   "configurations": [
     {
       "name": "Linux-arm-cross-platform",
-      "includePath": ["${workspaceFolder}/**"],
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
       "compilerPath": "/usr/local/bin/arm-none-eabi-g++",
       "cStandard": "gnu11",
       "cppStandard": "gnu++14",
