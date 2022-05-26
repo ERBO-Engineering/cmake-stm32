@@ -4,7 +4,6 @@ RUN apt-get update
 
 RUN apt-get install \
     git wget cmake  stlink-tools \
-
     # build tools for openocd
     libhidapi-hidraw0 \
     libusb-0.1-4 \
@@ -17,6 +16,7 @@ RUN apt-get install \
     automake \
     pkg-config \
     tclsh \
+    telnet \
     -y
 
 

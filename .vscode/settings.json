@@ -5,7 +5,8 @@
   },
   "C_Cpp.default.intelliSenseMode": "gcc-arm",
   "files.associations": {
-    "stm32f4xx_hal.h": "c"
+    "stm32f4xx_hal.h": "c",
+    "stm32f4xx.h": "c"
   },
   "cortex-debug.gdbPath": "arm-none-eabi-gdb"
 }
