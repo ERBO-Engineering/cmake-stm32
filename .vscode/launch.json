@@ -13,7 +13,7 @@
         "interface/stlink.cfg",
         "target/stm32f4x.cfg"
       ],
-      "preLaunchTask": "flash",
+      "preLaunchTask": "flash-openocd",
       "showDevDebugOutput": "raw",
       "svdFile": "${workspaceRoot}/debug-files/STM32F411.svd"
     }
