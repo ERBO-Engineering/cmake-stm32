@@ -3,8 +3,21 @@
   "tasks": [
     {
       "type": "shell",
-      "label": "build",
-      "command": "cmake .. && cmake --build ${workspaceFolder}/build --config Debug",
+      "label": "build-debug",
+      "command": "cmake -DCMAKE_BUILD_TYPE=Debug .. && cmake --build ${workspaceFolder}/build",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "label": "build-release",
+      "command": "cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build ${workspaceFolder}/build",
       "args": [],
       "options": {
         "cwd": "${workspaceFolder}/build"
