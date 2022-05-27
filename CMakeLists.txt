@@ -6,7 +6,7 @@ set(CMAKE_CXX_COMPILER_WORKS 1)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/build-tool/cmake/stm32_gcc.cmake)
 
 # set project
-project(cmake-stm32f4 C ASM)
+project(cmake-stm32 C ASM)
 
 # Set build options
 set(USE_HAL 1)
