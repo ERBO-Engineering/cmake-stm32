@@ -1,3 +1,4 @@
 .vscode/
 build/
 .vscode/.cortex-debug.peripherals.state.json
+.cache

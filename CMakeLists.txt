@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_C_COMPILER_WORKS 1)
 set(CMAKE_CXX_COMPILER_WORKS 1)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/build-tool/cmake/stm32_gcc.cmake)
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # set project
 project(cmake-stm32 C ASM)
