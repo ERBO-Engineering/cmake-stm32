@@ -21,18 +21,35 @@ find_package(CMSIS COMPONENTS STM32F411VE REQUIRED)
 
 # Set project sources
 set(PROJECT_SOURCES
+    # ST sources
+    ${STM32_CUBE_F4_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
+
+    # project sources
+    src/stm32f4xx_it.c
     src/main.c
 )
 
 # Set project includes
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(
+    # ST includes
+    ${STM32_CUBE_F4_PATH}/USB_HOST/App
+
+    # project includes
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 # Include HAL if required else only use CMSIS
 if (${USE_HAL})
     message("Building with HAL")
     add_definitions(-DUSE_HAL)
     find_package(HAL COMPONENTS STM32F4 REQUIRED)
-    set(LIBRARIES CMSIS::STM32::F411VE HAL::STM32::F4::GPIO)
+    set(
+        LIBRARIES
+        CMSIS::STM32::F411VE
+        HAL::STM32::F4::CORTEX
+        HAL::STM32::F4::RCC
+        HAL::STM32::F4::GPIO
+    )
 else()
     message("Building without HAL")
     set(LIBRARIES CMSIS::STM32::F411VE)
