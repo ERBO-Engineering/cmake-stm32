@@ -80,6 +80,7 @@ NVIC.NonMaskableInt_IRQn=true\:0\:0\:false\:false\:true\:true\:false\:false
 NVIC.OTG_FS_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 NVIC.PendSV_IRQn=true\:0\:0\:false\:false\:true\:true\:false\:false
 NVIC.PriorityGroup=NVIC_PRIORITYGROUP_0
+NVIC.RCC_IRQn=true\:0\:0\:false\:false\:true\:true\:false\:true
 NVIC.SVCall_IRQn=true\:0\:0\:false\:false\:true\:true\:false\:false
 NVIC.SysTick_IRQn=true\:0\:0\:true\:false\:true\:true\:true\:false
 NVIC.UsageFault_IRQn=true\:0\:0\:false\:false\:true\:true\:false\:false
