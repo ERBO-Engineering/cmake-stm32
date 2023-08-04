@@ -8,5 +8,7 @@
     "stm32f4xx_hal.h": "c",
     "stm32f4xx.h": "c"
   },
-  "cortex-debug.gdbPath": "arm-none-eabi-gdb"
+  "cortex-debug.gdbPath": "arm-none-eabi-gdb",
+  "C_Cpp.errorSquiggles": "disabled",
+  "cmake.configureOnOpen": true
 }

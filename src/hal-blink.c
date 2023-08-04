@@ -17,11 +17,11 @@ extern void blink(){
 	
 	while(1){
 		
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14 | GPIO_PIN_15, GPIO_PIN_SET); // Turn on LEDs
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET); // Turn on LEDs
 		
 		for(i = 0; i < 2000000; i++){}; // Implement a 1 second (ish!) delay
 		
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14 | GPIO_PIN_15, GPIO_PIN_RESET); // Turn off LEDs
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET); // Turn off LEDs
 			
 		for(i = 0; i < 2000000; i++){}; // Implement a 1 second (ish!) delay
 		
