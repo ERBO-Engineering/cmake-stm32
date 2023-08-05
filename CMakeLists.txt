@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
     src/stm32f4xx_it.c
     src/main.c
     src/led_controller.c
+    src/led_pattern.c
 )
 
 # Set project includes
