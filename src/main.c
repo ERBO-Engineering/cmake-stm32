@@ -1,28 +1,44 @@
 
 #include "main.h"
+#include "led_controller.h"
+#include "led_game.h"
+#include "led_pattern.h"
 #include "stm32f4xx_hal.h"
 #include <stm32f411xe.h>
 #include <stm32f4xx_hal_adc.h>
 #include <stm32f4xx_hal_def.h>
 #include <stm32f4xx_hal_gpio.h>
 
-// #define STM32F411xE
+/* DEFINES */
+#define PATTERN_BUFFER_SIZE 100
 
-////MIC pins
-// PC3 PDM_OUT
-// PB10 clock
+/* VARIABLES */
+ADC_HandleTypeDef hadc1;
 
-/* Private function prototypes -----------------------------------------------*/
+// select the 4 LEDs present on our discovery board
+struct LedPinMapping m_pinMapping[LED_COUNT] = {
+    {.pin = LD4_Pin, .port = LD4_GPIO_Port},
+    {.pin = LD3_Pin, .port = LD3_GPIO_Port},
+    {.pin = LD5_Pin, .port = LD5_GPIO_Port},
+    {.pin = LD6_Pin, .port = LD6_GPIO_Port}};
+
+struct LedPatternStep m_patternBuffer[PATTERN_BUFFER_SIZE] = {};
+
+uint16_t m_selectedPin = 0;
+uint8_t m_buttonPressed = 0;
+
+/* PROTOTYPES */
+
 void SystemClock_Config(void);
 void PeriphCommonClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 void Error_Handler();
 
-ADC_HandleTypeDef hadc1;
-uint8_t m_buttonPressed = 0;
+/* main */
 
 int main() {
+  int err = 0;
 
   if (HAL_OK != HAL_Init()) {
     Error_Handler();
@@ -37,9 +53,17 @@ int main() {
   MX_GPIO_Init();
 
   MX_ADC1_Init();
+
+  /* Setup the LED game environment */
+  LED_GAME_setup(m_pinMapping, LED_COUNT, m_patternBuffer, PATTERN_BUFFER_SIZE,
+                 LD6_Pin, 0, 250, 10, &m_buttonPressed, &hadc1);
+
   while (1) {
-    HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
-    HAL_Delay(100);
+
+    err = LED_GAME_update(m_selectedPin);
+    if (err != 0) {
+      Error_Handler();
+    }
   }
 }
 
@@ -208,4 +232,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(GPIO_Pin);
   m_buttonPressed = 1;
+  if (NULL != LED_PATTERN_get_current_step()) {
+    m_selectedPin = LED_PATTERN_get_current_step()->pin;
+  }
 }
