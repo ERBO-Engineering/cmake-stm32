@@ -23,12 +23,15 @@ find_package(CMSIS COMPONENTS STM32F411VE REQUIRED)
 set(PROJECT_SOURCES
     # ST sources
     ${STM32_CUBE_F4_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
+    ${STM32_CUBE_F4_PATH}/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c
+    ${STM32_CUBE_F4_PATH}/Core/Src/stm32f4xx_hal_msp.c
 
     # project sources
     src/stm32f4xx_it.c
     src/main.c
     src/led_controller.c
     src/led_pattern.c
+    src/led_game.c
 )
 
 # Set project includes
@@ -51,6 +54,8 @@ if (${USE_HAL})
         HAL::STM32::F4::CORTEX
         HAL::STM32::F4::RCC
         HAL::STM32::F4::GPIO
+        HAL::STM32::F4::ADC
+        HAL::STM32::F4::DMA
     )
 else()
     message("Building without HAL")
