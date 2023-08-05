@@ -27,6 +27,7 @@ set(PROJECT_SOURCES
     # project sources
     src/stm32f4xx_it.c
     src/main.c
+    src/led_controller.c
 )
 
 # Set project includes
@@ -54,6 +55,10 @@ else()
     message("Building without HAL")
     set(LIBRARIES CMSIS::STM32::F411VE)
 endif()
+
+add_definitions(
+    -DLED_COUNT=4
+)
 
 # Set the project executable
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
