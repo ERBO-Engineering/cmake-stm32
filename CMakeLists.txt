@@ -105,12 +105,12 @@ link_directories(
 target_link_libraries(${PROJECT_NAME}
  ${LIBRARIES}
  STM32::NoSys
- ${STM32_CUBE_F4_PATH}/Middlewares/ST/STM32_Audio/Addons/PDM/Lib/libPDMFilter_CM4_GCC_wc32.a
+ ${STM32_CUBE_F4_PATH}/Middlewares/ST/STM32_Audio/Addons/PDM/Lib/libPDMFilter_CM4_GCC_wc16.a
  m
 )
 
 link_libraries(
-    PDMFilter_CM4_GCC_wc32
+    PDMFilter_CM4_GCC_wc16
 )
 
 

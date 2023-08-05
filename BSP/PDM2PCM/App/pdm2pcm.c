@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "pdm2pcm.h"
+#include "pdm2pcm_glo.h"
 
 /* USER CODE BEGIN 0 */
 /* USER CODE END 0 */
@@ -42,13 +43,13 @@ void MX_PDM2PCM_Init(void)
   PDM1_filter_handler.bit_order = PDM_FILTER_BIT_ORDER_LSB;
   PDM1_filter_handler.endianness = PDM_FILTER_ENDIANNESS_BE;
   PDM1_filter_handler.high_pass_tap = 2104533974;
-  PDM1_filter_handler.in_ptr_channels = 2;
-  PDM1_filter_handler.out_ptr_channels = 2;
+  PDM1_filter_handler.in_ptr_channels = 1;
+  PDM1_filter_handler.out_ptr_channels = 1;
   PDM_Filter_Init(&PDM1_filter_handler);
 
   PDM1_filter_config.decimation_factor = PDM_FILTER_DEC_FACTOR_64;
-  PDM1_filter_config.output_samples_number = 16;
-  PDM1_filter_config.mic_gain = 0;
+  PDM1_filter_config.output_samples_number = 48;
+  PDM1_filter_config.mic_gain = 4;
   PDM_Filter_setConfig(&PDM1_filter_handler, &PDM1_filter_config);
 
   /* USER CODE BEGIN 3 */
@@ -61,6 +62,11 @@ void MX_PDM2PCM_Init(void)
 /*  process function */
 uint8_t MX_PDM2PCM_Process(uint16_t *PDMBuf, uint16_t *PCMBuf)
 {
+
+  PDM_Filter(&PDMBuf[0], &PCMBuf[0], &PDM1_filter_handler);
+  PDM1_filter_config.mic_gain = 4;
+  PDM_Filter_setConfig(&PDM1_filter_handler, &PDM1_filter_config);
+  
   /*
   uint8_t BSP_AUDIO_IN_PDMToPCM(uint16_t * PDMBuf, uint16_t * PCMBuf)
 

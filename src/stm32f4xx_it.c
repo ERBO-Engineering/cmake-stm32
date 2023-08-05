@@ -19,7 +19,14 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "pdm2pcm.h"
 #include "stm32f4xx_it.h"
+#include <stdint.h>
+#include <stm32f411xe.h>
+#include <stm32f4xx.h>
+#include <stm32f4xx_hal_dma.h>
+#include <stm32f4xx_hal_gpio.h>
+#include <stm32f4xx_hal_i2c.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -52,11 +59,17 @@
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+
+extern uint16_t sampleBuffer[48*4];
+extern uint16_t PCMbufje[48 * 1000];
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern DMA_HandleTypeDef hdma_spi2_rx;
+
+extern I2S_HandleTypeDef hi2s2;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -212,6 +225,8 @@ void RCC_IRQHandler(void)
   /* USER CODE END RCC_IRQn 1 */
 }
 
+
+int16_t globalBadboy = 0;
 /**
   * @brief This function handles DMA1 stream3 global interrupt.
   */
@@ -219,11 +234,51 @@ void DMA1_Stream3_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Stream3_IRQn 0 */
 
+  uint16_t tempstate = 0;
+
+  //CHECK half transfer
+  if(__HAL_DMA_GET_IT_SOURCE(&hdma_spi2_rx, DMA_IT_HT) != RESET){
+    HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, 1);
+    HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, 0);
+    tempstate = 1;
+  } else if(__HAL_DMA_GET_IT_SOURCE(&hdma_spi2_rx, DMA_IT_TC) != RESET){
+    HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, 1);
+    HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, 0);
+
+    MX_PDM2PCM_Process(sampleBuffer, &PCMbufje[globalBadboy * 48]);
+
+    globalBadboy++;
+
+    if(globalBadboy >= 999)
+    {
+    HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, 1);
+    HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, 1);
+    CDC_Transmit_FS(&PCMbufje[0], (48*1000*2));
+    }
+
+  }else {
+    HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, 0);
+    HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, 0);
+  }
+
+  //CHECK FULL transfer
+
   /* USER CODE END DMA1_Stream3_IRQn 0 */
+  
   HAL_DMA_IRQHandler(&hdma_spi2_rx);
   /* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
 
   /* USER CODE END DMA1_Stream3_IRQn 1 */
+}
+
+void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
+{
+  /* Prevent unused argument(s) compilation warning */
+  HAL_I2S_Receive_DMA(&hi2s2, &sampleBuffer[0], 48);
+
+  /* NOTE : This function Should not be modified, when the callback is needed,
+            the HAL_I2S_RxCpltCallback could be implemented in the user file
+   */
 }
 
 /**
@@ -232,6 +287,7 @@ void DMA1_Stream3_IRQHandler(void)
 void OTG_FS_IRQHandler(void)
 {
   /* USER CODE BEGIN OTG_FS_IRQn 0 */
+  
 
   /* USER CODE END OTG_FS_IRQn 0 */
   HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
