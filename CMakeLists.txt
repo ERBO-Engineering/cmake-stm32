@@ -51,7 +51,6 @@ set(PROJECT_SOURCES
     src/stm32f4xx_it.c
     src/main.c
     # ${STM32_CUBE_F4_PATH}/Core/Src/main.c
-
 )
 
 # Set project includes

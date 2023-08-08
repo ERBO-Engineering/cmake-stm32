@@ -71,8 +71,12 @@ void logStatus(char *log, HAL_StatusTypeDef status);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint16_t sampleBuffer[48 *4]= {0};
-uint16_t PCMbufje[48 * 1000] = {0};
+#define PCM_BUF_SIZE 16
+// For a decimation factor of 64 and 16-bit wordlength ...
+#define PDM_BUF_SIZE (PCM_BUF_SIZE*4)
+
+uint16_t pcm_buffer[PCM_BUF_SIZE]= {0};
+uint16_t RX_buffer[2][PDM_BUF_SIZE] = {0};
 
 /* USER CODE END 0 */
 
@@ -114,26 +118,13 @@ int main(void) {
   HAL_StatusTypeDef status;
 
   
-  char logMessage[100];
-  char tick[] = "__TICK__ \r\n";
-  uint16_t tickLen = sizeof(tick) / sizeof(tick[0]);
-  uint16_t logLen = sizeof(logMessage) / sizeof(logMessage[0]);
-
-  status = HAL_I2S_Receive_DMA(&hi2s2, &sampleBuffer[0], 48);
-  if (status == HAL_OK)
-    logLen = sprintf(logMessage, "This is the DMA status %s\r\n", "HAL_OK");
-  if (status == HAL_ERROR)
-    logLen = sprintf(logMessage, "This is the DMA status %s\r\n", "HAL_ERROR");
-  if (status == HAL_BUSY)
-    logLen = sprintf(logMessage, "This is the DMA status %s\r\n", "HAL_BUSY");
-  if (status == HAL_TIMEOUT)
-    logLen =
-        sprintf(logMessage, "This is the DMA status %s\r\n", "HAL_TIMEOUT");
+  status = HAL_I2S_Receive_DMA(&hi2s2, RX_buffer[0], PDM_BUF_SIZE);
 
   /* USER CODE END 2 */
 
-  __HAL_RCC_CRC_CLK_ENABLE();
-  CRC->CR = CRC_CR_RESET;
+  //needed
+  // __HAL_RCC_CRC_CLK_ENABLE();
+  // CRC->CR = CRC_CR_RESET;
 
   MX_PDM2PCM_Init();
   /* Infinite loop */
@@ -153,6 +144,25 @@ int main(void) {
     /* USER CODE BEGIN 3 */
   }
 }
+
+void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
+{
+  /* Prevent unused argument(s) compilation warning */
+
+  MX_PDM2PCM_Process(RX_buffer[0], pcm_buffer);
+  CDC_Transmit_FS((uint8_t*)pcm_buffer,  PCM_BUF_SIZE * 2);
+
+}
+
+void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s) {
+
+
+  MX_PDM2PCM_Process(RX_buffer[0], pcm_buffer);
+  CDC_Transmit_FS((uint8_t*)pcm_buffer,  PCM_BUF_SIZE * 2);
+  //send some data
+}
+
+
 
 /**
  * @brief System Clock Configuration
@@ -225,7 +235,8 @@ static void MX_CRC_Init(void) {
  * @param None
  * @retval None
  */
-static void MX_I2S2_Init(void) {
+static void MX_I2S2_Init(void)
+{
 
   /* USER CODE BEGIN I2S2_Init 0 */
 
@@ -243,12 +254,14 @@ static void MX_I2S2_Init(void) {
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_DISABLE;
-  if (HAL_I2S_Init(&hi2s2) != HAL_OK) {
+  if (HAL_I2S_Init(&hi2s2) != HAL_OK)
+  {
     Error_Handler();
   }
   /* USER CODE BEGIN I2S2_Init 2 */
 
   /* USER CODE END I2S2_Init 2 */
+
 }
 
 /**

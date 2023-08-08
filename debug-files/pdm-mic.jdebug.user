@@ -1,22 +1,35 @@
 
 
-OpenDocument="", FilePath="", Line=0
-OpenDocument="", FilePath="", Line=0
+Breakpoint=/home/erwin/work/blogposts/pdm-mic/src/stm32f4xx_it.c:240:6, State=BP_STATE_DISABLED
+Breakpoint=/home/erwin/work/blogposts/pdm-mic/src/stm32f4xx_it.c:250:17, State=BP_STATE_DISABLED
+Breakpoint=/home/erwin/work/blogposts/pdm-mic/src/stm32f4xx_it.c:272, State=BP_STATE_DISABLED
+Breakpoint=/home/erwin/work/blogposts/pdm-mic/src/main.c:163:31, State=BP_STATE_DISABLED
+Breakpoint=/home/erwin/work/blogposts/pdm-mic/src/main.c:179:31, State=BP_STATE_DISABLED
+OpenDocument="main.c", FilePath="/home/erwin/work/blogposts/pdm-mic/src/main.c", Line=71
+OpenDocument="stm32f4xx_hal_i2s.c", FilePath="/home/erwin/work/blogposts/pdm-mic/BSP/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s.c", Line=1699
+OpenDocument="stm32f4xx_hal_dma.c", FilePath="/home/erwin/work/blogposts/pdm-mic/BSP/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c", Line=880
+OpenDocument="stm32f4xx_it.c", FilePath="/home/erwin/work/blogposts/pdm-mic/src/stm32f4xx_it.c", Line=87
+OpenDocument="startup_stm32f411xe.s", FilePath="/home/erwin/work/blogposts/pdm-mic/BSP/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f411xe.s", Line=49
+OpenDocument="stm32f4xx_hal_gpio.c", FilePath="/home/erwin/work/blogposts/pdm-mic/BSP/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c", Line=399
+OpenDocument="stm32f4xx_hal.c", FilePath="/home/erwin/work/blogposts/pdm-mic/BSP/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c", Line=314
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=565, h=515, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
-OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=938, h=318, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x60
-OpenWindow="Global Data", DockArea=RIGHT, x=0, y=0, w=565, h=221, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=300, h=221, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Functions", DockArea=LEFT, x=0, y=0, w=300, h=515, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=939, h=318, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=2, w=565, h=352, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=565, h=220, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Break & Tracepoints", DockArea=LEFT, x=0, y=0, w=422, h=161, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VectorCatchIndexMask=254
+OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=842, h=318, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x60
+OpenWindow="Global Data", DockArea=RIGHT, x=0, y=1, w=565, h=158, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=2, w=422, h=480, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Functions", DockArea=LEFT, x=0, y=1, w=422, h=89, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=847, h=318, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[100;100;100;100;100;100]
 TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[637;100;100;100;490]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[170;137;406]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[170;137;273]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[100;177;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;359]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[100;100;100;100]
-TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[100;100;100;100;100;100]
-WatchedExpression="RCC_HSE_OFF", Window=Watched Data 1
-WatchedExpression="uwTick", Window=Watched Data 1
-WatchedExpression="i2sdiv", Window=Watched Data 1
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;985]
+TableHeader="Vector Catches", SortCol="", SortOrder="ASCENDING", VisibleCols=["";"Vector Catch";"Description"], ColWidths=[50;300;500]
+TableHeader="Break & Tracepoints", SortCol="", SortOrder="ASCENDING", VisibleCols=["";"Type";"Location";"Extras"], ColWidths=[100;100;637;126]
+WatchedExpression="PCMbufje", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="globalBadboy", RefreshRate=2, Window=Watched Data 1

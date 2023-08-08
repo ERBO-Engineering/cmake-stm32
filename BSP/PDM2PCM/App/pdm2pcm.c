@@ -20,7 +20,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "pdm2pcm.h"
-#include "pdm2pcm_glo.h"
 
 /* USER CODE BEGIN 0 */
 /* USER CODE END 0 */
@@ -48,8 +47,8 @@ void MX_PDM2PCM_Init(void)
   PDM_Filter_Init(&PDM1_filter_handler);
 
   PDM1_filter_config.decimation_factor = PDM_FILTER_DEC_FACTOR_64;
-  PDM1_filter_config.output_samples_number = 48;
-  PDM1_filter_config.mic_gain = 4;
+  PDM1_filter_config.output_samples_number = 16;
+  PDM1_filter_config.mic_gain = 28;
   PDM_Filter_setConfig(&PDM1_filter_handler, &PDM1_filter_config);
 
   /* USER CODE BEGIN 3 */
@@ -64,9 +63,7 @@ uint8_t MX_PDM2PCM_Process(uint16_t *PDMBuf, uint16_t *PCMBuf)
 {
 
   PDM_Filter(&PDMBuf[0], &PCMBuf[0], &PDM1_filter_handler);
-  PDM1_filter_config.mic_gain = 4;
-  PDM_Filter_setConfig(&PDM1_filter_handler, &PDM1_filter_config);
-  
+
   /*
   uint8_t BSP_AUDIO_IN_PDMToPCM(uint16_t * PDMBuf, uint16_t * PCMBuf)
 
