@@ -6,12 +6,14 @@ set(CMAKE_CXX_COMPILER_WORKS 1)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/build-tool/cmake/stm32_gcc.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
+# Setup unity path
+set(UNITY_PATH  /var/lib/gems/3.0.0/gems/ceedling-0.31.1/vendor/unity/src)
+
 # set project
 project(cmake-stm32 C ASM)
 
 # Set build options
 set(USE_HAL 1)
-
 
 # Setup cubemx directory
 set(STM32_CUBE_F4_PATH ${CMAKE_CURRENT_SOURCE_DIR}/BSP)
@@ -41,6 +43,12 @@ include_directories(
 
     # project includes
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+
+    #test includes
+    ${CMAKE_CURRENT_SOURCE_DIR}/build/test/mocks
+    ${UNITY_PATH}
+
+
 )
 
 # Include HAL if required else only use CMSIS
