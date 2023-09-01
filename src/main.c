@@ -54,9 +54,18 @@ int main() {
 
   MX_ADC1_Init();
 
+  struct GameSettings gameSettings = {m_pinMapping,
+                                      .ledCount = LED_COUNT,
+                                      .patternBuffer = m_patternBuffer,
+                                      .bufferSize = PATTERN_BUFFER_SIZE,
+                                      .winningPin = LD6_Pin,
+                                      0,
+                                      250,
+                                      10,
+                                      .adc = &hadc1};
+
   /* Setup the LED game environment */
-  LED_GAME_setup(m_pinMapping, LED_COUNT, m_patternBuffer, PATTERN_BUFFER_SIZE,
-                 LD6_Pin, 0, 250, 10, &m_buttonPressed, &hadc1);
+  LED_GAME_setup(&gameSettings, &m_buttonPressed);
 
   while (1) {
 

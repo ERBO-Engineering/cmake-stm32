@@ -7,28 +7,31 @@
 #include <stm32f411xe.h>
 #include <stm32f4xx_hal_adc.h>
 
+/*PUBLIC TYPES*/
+struct GameSettings {
+  struct LedPinMapping *pinMapping;
+  uint32_t ledCount;
+  struct LedPatternStep *patternBuffer;
+  uint32_t bufferSize;
+
+  uint16_t winningPin;
+  uint32_t startLevel;
+  uint32_t startSpeed;
+  uint32_t levelIncrement;
+
+  ADC_HandleTypeDef *adc;
+};
+
+/* PUBLIC FUNCTIONS */
+
 /**
  * @brief setup all the required settings for your awesome LED game
  *
- * @param pinMapping pinMapping of all your LEDs with port
- * @param ledCount total count of your LEDs
- * @param patternBuffer buffer in which all your patterns will be created
- * @param bufferSize size of the buffer
- * @param winningPin the GPIO that has to be active when the user clicks the
- * button to win the game
- * @param startLevel starting level count
- * @param startSpeed initial speed of the play pattern
- * @param levelIncrement how fast the speed of the play pattern increases with
- * each win
- * @param buttonIsPressed pointer to a uint8_t that is set through an interrupt
- * if the button is pressed.
- * @param adc
+ * @param settings pointer to the struct containing all the game settings
+ * @param isButtonPressed pointer to the value that indicates button is pressed
+ * or not
  */
-void LED_GAME_setup(const struct LedPinMapping pinMapping[], uint32_t ledCount,
-                    struct LedPatternStep patternBuffer[], uint32_t bufferSize,
-                    uint16_t winningPin, uint32_t startLevel,
-                    uint32_t startSpeed, uint32_t levelIncrement,
-                    uint8_t *buttonIsPressed, ADC_HandleTypeDef *adc);
+void LED_GAME_setup(struct GameSettings *settings, uint8_t *isButtonPressed);
 
 /**
  * @brief update game loop, should be called in the super loop

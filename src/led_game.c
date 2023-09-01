@@ -7,7 +7,6 @@
 #include "led_pattern.h"
 
 /* DEFINES */
-
 #if defined(UNIT_TEST) || defined(UNIT_TEST_x86_64)
 #undef STATIC
 #define STATIC
@@ -16,29 +15,15 @@
 #endif
 
 /* TYPES */
-
 enum GameState { waiting_for_start = 0, countdown, playing, result };
 
-/* VARIABLES */
-
+/* PRIVATE VARIABLES */
+STATIC struct GameSettings *m_gameSettings;
 STATIC uint32_t m_level = 0;
-STATIC uint32_t m_selectedPin = 0;
-
-STATIC uint32_t m_levelIncrementValue = 5;
-STATIC uint32_t m_startLevel = 0;
-STATIC uint32_t m_startSpeed = 250;
-STATIC uint16_t m_winningPin = 0;
-
-STATIC uint32_t m_ledCount = 0;
-const STATIC struct LedPinMapping *m_pinMapping = NULL;
-
-STATIC struct LedPatternStep *m_patternBuffer = NULL;
-STATIC uint32_t m_bufferSize = 0;
+STATIC uint16_t m_selectedPin = 0;
+STATIC uint8_t *m_buttonIsPressed = NULL;
 
 STATIC enum GameState m_currentState = waiting_for_start;
-
-STATIC uint8_t *m_buttonIsPressed = NULL;
-STATIC ADC_HandleTypeDef *m_adc = NULL;
 
 /* PROTOTYPES */
 
@@ -52,32 +37,17 @@ STATIC int _get_semi_random_pin();
 
 /* PUBLIC FUNCTIONS */
 
-void LED_GAME_setup(const struct LedPinMapping pinMapping[], uint32_t ledCount,
-                    struct LedPatternStep patternBuffer[], uint32_t bufferSize,
-                    uint16_t winningPin, uint32_t startLevel,
-                    uint32_t startSpeed, uint32_t levelIncrement,
-                    uint8_t *buttonIsPressed, ADC_HandleTypeDef *adc) {
-  m_pinMapping = pinMapping;
-  m_ledCount = ledCount;
-
-  m_patternBuffer = patternBuffer;
-  m_bufferSize = bufferSize;
-
-  m_winningPin = winningPin;
-  m_startLevel = startLevel;
-  m_startSpeed = startSpeed;
-  m_levelIncrementValue = levelIncrement;
-
-  m_buttonIsPressed = buttonIsPressed;
-  m_adc = adc;
+void LED_GAME_setup(struct GameSettings *settings, uint8_t *isButtonPressed) {
+  m_gameSettings = settings;
+  m_buttonIsPressed = isButtonPressed;
 }
 
 int LED_GAME_update(uint16_t selectedPin) {
 
-  if (m_pinMapping == NULL) {
+  if (m_gameSettings->pinMapping == NULL) {
     return -1;
   }
-  if (m_patternBuffer == NULL) {
+  if (m_gameSettings->patternBuffer == NULL) {
     return -1;
   }
 
@@ -147,9 +117,10 @@ STATIC int _execute_waiting_for_game_start() {
   m_level = 0;
   m_selectedPin = 0;
 
-  patternCount = LED_PATTERN_create_blink(m_pinMapping, LED_COUNT, 250,
-                                          m_patternBuffer, m_bufferSize);
-  err = LED_PATTERN_play_pattern(m_patternBuffer, patternCount);
+  patternCount = LED_PATTERN_create_blink(
+      m_gameSettings->pinMapping, m_gameSettings->ledCount, 250,
+      m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
+  err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
   if (err != 0) {
     return err;
   }
@@ -164,18 +135,19 @@ STATIC int _execute_waiting_for_game_start() {
 STATIC int _execute_countdown() {
   int patternCount = 0;
   int err = 0;
-  for (int i = 0; i < m_ledCount; i++) {
-    LED_CONTROLLER_turn_off(m_pinMapping[i].pin);
+  for (int i = 0; i < m_gameSettings->ledCount; i++) {
+    LED_CONTROLLER_turn_off(m_gameSettings->pinMapping[i].pin);
   }
   for (int i = 0; i < 4; i++) {
-    LED_CONTROLLER_turn_off(m_winningPin);
+    LED_CONTROLLER_turn_off(m_gameSettings->winningPin);
     HAL_Delay(250);
-    LED_CONTROLLER_turn_on(m_winningPin);
+    LED_CONTROLLER_turn_on(m_gameSettings->winningPin);
     HAL_Delay(250);
   }
-  patternCount = LED_PATTERN_create_countdown(m_pinMapping, LED_COUNT, 250,
-                                              m_patternBuffer, m_bufferSize);
-  err = LED_PATTERN_play_pattern(m_patternBuffer, patternCount);
+  patternCount = LED_PATTERN_create_countdown(
+      m_gameSettings->pinMapping, m_gameSettings->ledCount, 250,
+      m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
+  err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
   if (err != 0) {
     return err;
   }
@@ -191,14 +163,15 @@ STATIC int _execute_playing() {
   int err = 0;
   int patternCount;
 
-  speedIncrease = m_level * m_levelIncrementValue;
-  if (speedIncrease > m_startSpeed) {
-    speedIncrease = m_startSpeed - m_levelIncrementValue;
+  speedIncrease = m_level * m_gameSettings->levelIncrement;
+  if (speedIncrease > m_gameSettings->startSpeed) {
+    speedIncrease = m_gameSettings->startSpeed - m_gameSettings->levelIncrement;
   }
-  patternCount = LED_PATTERN_create_circle(m_pinMapping, LED_COUNT,
-                                           m_startSpeed - speedIncrease,
-                                           m_patternBuffer, m_bufferSize);
-  err = LED_PATTERN_play_pattern(m_patternBuffer, patternCount);
+  patternCount = LED_PATTERN_create_circle(
+      m_gameSettings->pinMapping, m_gameSettings->ledCount,
+      m_gameSettings->startSpeed - speedIncrease, m_gameSettings->patternBuffer,
+      m_gameSettings->bufferSize);
+  err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
   if (err != 0) {
     return err;
   }
@@ -218,23 +191,26 @@ STATIC int _execute_result() {
   int err = 0;
 
   // on win increase level and get new winning pin
-  if (m_selectedPin == m_winningPin) {
+  if (m_selectedPin == m_gameSettings->winningPin) {
     m_level++;
-    m_winningPin = _get_semi_random_pin();
+    m_gameSettings->winningPin = _get_semi_random_pin();
 
     for (uint8_t i = 0; i < 5; i++) {
-      patternCount = LED_PATTERN_create_circle(m_pinMapping, LED_COUNT, 25 * i,
-                                               m_patternBuffer, m_bufferSize);
-      err = LED_PATTERN_play_pattern(m_patternBuffer, patternCount);
+      patternCount = LED_PATTERN_create_circle(
+          m_gameSettings->pinMapping, m_gameSettings->ledCount, 25 * i,
+          m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
+      err =
+          LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
       if (err != 0) {
         return err;
       }
     }
     m_currentState = countdown;
   } else {
-    patternCount = LED_PATTERN_create_countdown(m_pinMapping, LED_COUNT, 100,
-                                                m_patternBuffer, m_bufferSize);
-    err = LED_PATTERN_play_pattern(m_patternBuffer, patternCount);
+    patternCount = LED_PATTERN_create_countdown(
+        m_gameSettings->pinMapping, m_gameSettings->ledCount, 100,
+        m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
+    err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
     if (err != 0) {
       return err;
     }
@@ -253,15 +229,18 @@ STATIC int _execute_result() {
 STATIC int _get_semi_random_pin() {
   int pin = -1;
   // start ADC convertion
-  HAL_ADC_Start(m_adc);
+  HAL_ADC_Start(m_gameSettings->adc);
   // ADC poll for conversion
-  if (HAL_OK != HAL_ADC_PollForConversion(m_adc, 100)) {
+  if (HAL_OK != HAL_ADC_PollForConversion(m_gameSettings->adc, 100)) {
     return -1;
   }
   // get the ADC conversion value
-  pin = m_pinMapping[HAL_ADC_GetValue(m_adc) % m_ledCount].pin;
+  pin = m_gameSettings
+            ->pinMapping[HAL_ADC_GetValue(m_gameSettings->adc) %
+                         m_gameSettings->ledCount]
+            .pin;
   // end ADC convertion
-  HAL_ADC_Stop(m_adc);
+  HAL_ADC_Stop(m_gameSettings->adc);
 
   return pin;
 }
