@@ -97,7 +97,8 @@ int LED_PATTERN_create_countdown(const struct LedPinMapping pinMap[],
   return patternCount;
 }
 
-int LED_PATTERN_play_pattern(struct LedPatternStep patternBuffer[],
+int LED_PATTERN_play_pattern(struct LedPinMapping *pinMapping, int ledCount,
+                             struct LedPatternStep patternBuffer[],
                              uint32_t bufferSize) {
   int err = 0;
   for (uint32_t stepIndex = 0; stepIndex < bufferSize; stepIndex++) {
@@ -107,7 +108,8 @@ int LED_PATTERN_play_pattern(struct LedPatternStep patternBuffer[],
       continue;
     }
 
-    err = LED_CONTROLLER_set_led(m_currentStep->pin, m_currentStep->state);
+    err = LED_CONTROLLER_set_led(pinMapping, ledCount, m_currentStep->pin,
+                                 m_currentStep->state);
     if (err != 0) {
       return err;
     }

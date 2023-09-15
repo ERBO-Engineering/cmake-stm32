@@ -6,12 +6,10 @@
 
 // MOCK HAL
 #include "mock_stm32f4xx_hal_gpio.h"
-
-struct LedPinMapping m_pinMapping[LED_COUNT] = {};
+#include <stm32f411xe.h>
 
 void setUp(void) {
   // Set up any necessary initialization here.
-  memset(m_pinMapping, 0, sizeof(m_pinMapping) / sizeof(m_pinMapping[0]));
 }
 
 void tearDown(void) {
@@ -20,27 +18,31 @@ void tearDown(void) {
 
 void test_LED_CONTROLLER_set_led_with_valid_pin(void) {
   uint16_t pin = 5;
+  GPIO_TypeDef *gpioDef = (GPIO_TypeDef *)10;
+  struct LedPinMapping pinMapping[LED_COUNT] = {};
 
-  m_pinMapping[0].port = (void *)10;
-  m_pinMapping[0].pin = pin; // create a valid pin
+  pinMapping[0].port = gpioDef;
+  pinMapping[0].pin = pin;
 
   // Mocking HAL_GPIO_WritePin
-  HAL_GPIO_WritePin_ExpectAnyArgs();
+  HAL_GPIO_WritePin_Expect(gpioDef, pin, GPIO_PIN_SET);
 
-  int result = LED_CONTROLLER_set_led(pin, GPIO_PIN_SET);
+  int result = LED_CONTROLLER_set_led(pinMapping, LED_COUNT, pin, GPIO_PIN_SET);
 
   // Assert that the function returns 0 for a valid pin.
   TEST_ASSERT_EQUAL(0, result);
 }
 
 void test_LED_CONTROLLER_set_led_with_invalid_pin(void) {
-  uint16_t pin = 10;
+  uint16_t pin = 5;
+  GPIO_TypeDef *gpioDef = (GPIO_TypeDef *)10;
+  struct LedPinMapping pinMapping[LED_COUNT] = {};
 
-  m_pinMapping[0].port = (void *)10;
-  m_pinMapping[0].pin = 0; // make pin invalid
+  pinMapping[0].port = gpioDef;
+  pinMapping[0].pin = 0; // invalid pin
 
   // we don't have to expect WritePin because it will never be called
-  int result = LED_CONTROLLER_set_led(pin, GPIO_PIN_SET);
+  int result = LED_CONTROLLER_set_led(pinMapping, LED_COUNT, pin, GPIO_PIN_SET);
 
   // Assert that the function returns -1 for a invalid pin.
   TEST_ASSERT_EQUAL(-1, result);
