@@ -120,7 +120,9 @@ STATIC int _execute_waiting_for_game_start() {
   patternCount = LED_PATTERN_create_blink(
       m_gameSettings->pinMapping, m_gameSettings->ledCount, 250,
       m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
-  err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
+  err = LED_PATTERN_play_pattern(m_gameSettings->pinMapping,
+                                 m_gameSettings->ledCount,
+                                 m_gameSettings->patternBuffer, patternCount);
   if (err != 0) {
     return err;
   }
@@ -136,18 +138,25 @@ STATIC int _execute_countdown() {
   int patternCount = 0;
   int err = 0;
   for (int i = 0; i < m_gameSettings->ledCount; i++) {
-    LED_CONTROLLER_turn_off(m_gameSettings->pinMapping[i].pin);
+    LED_CONTROLLER_turn_off(m_gameSettings->pinMapping,
+                            m_gameSettings->ledCount,
+                            m_gameSettings->pinMapping[i].pin);
   }
   for (int i = 0; i < 4; i++) {
-    LED_CONTROLLER_turn_off(m_gameSettings->winningPin);
+    LED_CONTROLLER_turn_off(m_gameSettings->pinMapping,
+                            m_gameSettings->ledCount,
+                            m_gameSettings->winningPin);
     HAL_Delay(250);
-    LED_CONTROLLER_turn_on(m_gameSettings->winningPin);
+    LED_CONTROLLER_turn_on(m_gameSettings->pinMapping, m_gameSettings->ledCount,
+                           m_gameSettings->winningPin);
     HAL_Delay(250);
   }
   patternCount = LED_PATTERN_create_countdown(
       m_gameSettings->pinMapping, m_gameSettings->ledCount, 250,
       m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
-  err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
+  err = LED_PATTERN_play_pattern(m_gameSettings->pinMapping,
+                                 m_gameSettings->ledCount,
+                                 m_gameSettings->patternBuffer, patternCount);
   if (err != 0) {
     return err;
   }
@@ -171,7 +180,9 @@ STATIC int _execute_playing() {
       m_gameSettings->pinMapping, m_gameSettings->ledCount,
       m_gameSettings->startSpeed - speedIncrease, m_gameSettings->patternBuffer,
       m_gameSettings->bufferSize);
-  err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
+  err = LED_PATTERN_play_pattern(m_gameSettings->pinMapping,
+                                 m_gameSettings->ledCount,
+                                 m_gameSettings->patternBuffer, patternCount);
   if (err != 0) {
     return err;
   }
@@ -199,8 +210,9 @@ STATIC int _execute_result() {
       patternCount = LED_PATTERN_create_circle(
           m_gameSettings->pinMapping, m_gameSettings->ledCount, 25 * i,
           m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
-      err =
-          LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
+      err = LED_PATTERN_play_pattern(
+          m_gameSettings->pinMapping, m_gameSettings->ledCount,
+          m_gameSettings->patternBuffer, patternCount);
       if (err != 0) {
         return err;
       }
@@ -210,7 +222,9 @@ STATIC int _execute_result() {
     patternCount = LED_PATTERN_create_countdown(
         m_gameSettings->pinMapping, m_gameSettings->ledCount, 100,
         m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
-    err = LED_PATTERN_play_pattern(m_gameSettings->patternBuffer, patternCount);
+    err = LED_PATTERN_play_pattern(m_gameSettings->pinMapping,
+                                   m_gameSettings->ledCount,
+                                   m_gameSettings->patternBuffer, patternCount);
     if (err != 0) {
       return err;
     }
