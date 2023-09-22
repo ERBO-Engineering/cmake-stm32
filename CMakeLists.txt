@@ -6,9 +6,6 @@ set(CMAKE_CXX_COMPILER_WORKS 1)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/build-tool/cmake/stm32_gcc.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-# Setup unity path
-set(UNITY_PATH  /var/lib/gems/3.0.0/gems/ceedling-0.31.1/vendor/unity/src)
-
 # set project
 project(cmake-stm32 C ASM)
 
@@ -35,6 +32,20 @@ set(PROJECT_SOURCES
     src/led_pattern.c
     src/led_game.c
 )
+
+# get the unity include to allow autocomplete during testing
+# Run the 'gem env gemdir' command and capture its output which leads to the ceedling path
+execute_process(
+    COMMAND gem which ceedling 
+    OUTPUT_VARIABLE CEEDLING_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE GEM_COMMAND_RESULT
+)
+# strip away the ceedling.rb from the path so we can use it in a include path
+string(REGEX REPLACE "/ceedling\\.rb$" "" CEEDLING_PATH "${CEEDLING_PATH}")
+
+# Setup unity path from the vendor directory of ceedling
+set(UNITY_PATH  ${CEEDLING_PATH}/../vendor/unity/src)
 
 # Set project includes
 include_directories(
