@@ -24,6 +24,35 @@ void tearDown(void) {
   // Clean up after each test case.
 }
 
+// -- LED_PATTERN_create_circle() --
+void test_LED_PATTERN_create_circle() {
+
+  struct LedPatternStep buffer[40] = {};
+  int expectedPatternCount = LED_COUNT * 2;
+  struct LedPatternStep expectedBuffer[8] = {
+      {.pin = pinMapping[0].pin, .state = GPIO_PIN_SET, .sleepTime = 100},
+      {.pin = pinMapping[0].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+
+      {.pin = pinMapping[1].pin, .state = GPIO_PIN_SET, .sleepTime = 100},
+      {.pin = pinMapping[1].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+
+      {.pin = pinMapping[2].pin, .state = GPIO_PIN_SET, .sleepTime = 100},
+      {.pin = pinMapping[2].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+
+      {.pin = pinMapping[3].pin, .state = GPIO_PIN_SET, .sleepTime = 100},
+      {.pin = pinMapping[3].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+      // {.pin = pinMapping[3].pin, .state = GPIO_PIN_RESET, .sleepTime = 0}
+
+  };
+
+  int patternCount = LED_PATTERN_create_circle(pinMapping, LED_COUNT, 100,
+                                               buffer, sizeof(buffer));
+
+  TEST_ASSERT_EQUAL(expectedPatternCount, patternCount);
+  TEST_ASSERT_EQUAL_MEMORY(expectedBuffer, buffer, sizeof(expectedBuffer));
+}
+// -- LED_PATTERN_play_pattern() --
+
 // Play a small pattern and verify if set_led calls and delay calls are correct
 void test_LED_PATTERN_play_pattern_success(void) {
   // setup play pattern
