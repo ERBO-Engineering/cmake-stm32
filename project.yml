@@ -80,11 +80,21 @@
   :gcovr:
     :html_medium_threshold: 75
     :html_high_threshold: 90
+    :gcov_executable: gcov-11
+    :report_include: "^src"
 
 #:tools:
 # Ceedling defaults to using gcc for compiling, linking, etc.
 # As [:tools] is blank, gcc will be used (so long as it's in your system path)
 # See documentation to configure a given toolchain for use
+
+#:module_generator:
+# Allows setting up the module generator paths
+:module_generator:
+  :project_root: ./
+  :source_root: src/
+  :inc_root: include/
+  :test_root: test/
 
 # LIBRARIES
 # These libraries are automatically injected into the build process. Those specified as
@@ -105,3 +115,4 @@
     - stdout_pretty_tests_report
     - module_generator
     - xml_tests_report
+    - gcov

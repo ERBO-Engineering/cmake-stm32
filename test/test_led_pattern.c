@@ -72,9 +72,9 @@ void test_LED_PATTERN_play_pattern_failed_to_set_pin(void) {
   LED_CONTROLLER_set_led_ExpectAndReturn(pinMapping, LED_COUNT,
                                          patternBuffer[0].pin,
                                          patternBuffer[0].state, expectedError);
+
   // don't expect other things to happen since the function should return on
   // error
-
   int result = LED_PATTERN_play_pattern(pinMapping, LED_COUNT, patternBuffer,
                                         sizeof(patternBuffer) /
                                             sizeof(patternBuffer[0]));
