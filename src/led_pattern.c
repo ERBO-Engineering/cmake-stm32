@@ -80,6 +80,7 @@ int LED_PATTERN_create_countdown(const struct LedPinMapping pinMap[],
   uint32_t patternCount = 0;
 
   memset(outBuffer, 0, bufferSize);
+
   for (uint32_t i = 0; i < ledCount; i++) {
     outBuffer[patternCount].pin = pinMap[i].pin;
     outBuffer[patternCount].state = GPIO_PIN_SET;
@@ -101,7 +102,8 @@ int LED_PATTERN_play_pattern(struct LedPinMapping *pinMapping, int ledCount,
                              struct LedPatternStep patternBuffer[],
                              uint32_t bufferSize) {
   int err = 0;
-  for (uint32_t stepIndex = 0; stepIndex < bufferSize; stepIndex++) {
+  for (uint32_t stepIndex = 0;
+       stepIndex < bufferSize / sizeof(struct LedPatternStep); stepIndex++) {
     m_currentStep = &patternBuffer[stepIndex];
     if (m_currentStep->pin == 0) {
       HAL_Delay(m_currentStep->sleepTime);

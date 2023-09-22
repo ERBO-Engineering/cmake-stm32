@@ -57,7 +57,7 @@ int main() {
   struct GameSettings gameSettings = {m_pinMapping,
                                       .ledCount = LED_COUNT,
                                       .patternBuffer = m_patternBuffer,
-                                      .bufferSize = PATTERN_BUFFER_SIZE,
+                                      .bufferSize = sizeof(m_patternBuffer),
                                       .winningPin = LD6_Pin,
                                       0,
                                       250,

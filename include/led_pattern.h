@@ -9,9 +9,9 @@
  * @brief defines a single step in a pattern
  *
  */
-struct LedPatternStep {
+struct __attribute__((packed)) LedPatternStep {
   uint16_t pin;
-  GPIO_PinState state;
+  uint32_t state;
   uint32_t sleepTime;
 };
 
