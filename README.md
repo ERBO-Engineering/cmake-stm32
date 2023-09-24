@@ -25,3 +25,10 @@ https://github.com/ObKo/stm32-cmake
 
 > If you want to use an older version of openocd (0.10.0) is the one you get by the ubuntu apt archives,
 > Then you need to add a different override regex in your launch.json (https://github.com/Marus/cortex-debug/issues/166)
+>
+
+## Testing coverage 
+
+![gcov code coverage](images/gcov.png)
+
+![screenshot of testing explorer ceedling](images/tests.png)
