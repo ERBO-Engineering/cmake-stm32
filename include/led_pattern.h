@@ -69,12 +69,12 @@ int LED_PATTERN_create_countdown(const struct LedPinMapping pinMap[],
  * @param pinMapping pointer to the pinMapping struct
  * @param ledCount amount of leds in the pinmap
  * @param patternBuffer
- * @param bufferSize
+ * @param stepCount how many steps have to be played from the buffer
  * @return int
  */
 int LED_PATTERN_play_pattern(struct LedPinMapping *pinMapping, int ledCount,
                              struct LedPatternStep patternBuffer[],
-                             uint32_t bufferSize);
+                             uint32_t stepCount);
 
 struct LedPatternStep *LED_PATTERN_get_current_step();
 

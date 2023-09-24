@@ -135,7 +135,8 @@ void test_LED_PATTERN_play_pattern_success(void) {
   HAL_Delay_Expect(400);
 
   int result = LED_PATTERN_play_pattern(pinMapping, LED_COUNT, patternBuffer,
-                                        sizeof(patternBuffer));
+                                        sizeof(patternBuffer) /
+                                            sizeof(patternBuffer[0]));
   TEST_ASSERT_EQUAL(0, result);
 }
 
