@@ -7,7 +7,7 @@
 #include "led_pattern.h"
 
 /* DEFINES */
-#if defined(UNIT_TEST) || defined(UNIT_TEST_x86_64)
+#if defined(TEST) || defined(TEST)
 #undef STATIC
 #define STATIC
 #else
@@ -34,6 +34,7 @@ STATIC int _execute_countdown();
 STATIC int _execute_playing();
 STATIC int _execute_result();
 STATIC int _get_semi_random_pin();
+STATIC uint32_t _calculate_game_speed();
 
 /* PUBLIC FUNCTIONS */
 
@@ -168,18 +169,14 @@ STATIC int _execute_countdown() {
  * @brief based on current level play the circle pattern at a certain speed
  */
 STATIC int _execute_playing() {
-  int speedIncrease = 0;
+  int gameSpeed = 0;
   int err = 0;
   int patternCount;
 
-  speedIncrease = m_level * m_gameSettings->levelIncrement;
-  if (speedIncrease > m_gameSettings->startSpeed) {
-    speedIncrease = m_gameSettings->startSpeed - m_gameSettings->levelIncrement;
-  }
+  gameSpeed = _calculate_game_speed();
   patternCount = LED_PATTERN_create_circle(
-      m_gameSettings->pinMapping, m_gameSettings->ledCount,
-      m_gameSettings->startSpeed - speedIncrease, m_gameSettings->patternBuffer,
-      m_gameSettings->bufferSize);
+      m_gameSettings->pinMapping, m_gameSettings->ledCount, gameSpeed,
+      m_gameSettings->patternBuffer, m_gameSettings->bufferSize);
   err = LED_PATTERN_play_pattern(m_gameSettings->pinMapping,
                                  m_gameSettings->ledCount,
                                  m_gameSettings->patternBuffer, patternCount);
@@ -257,4 +254,14 @@ STATIC int _get_semi_random_pin() {
   HAL_ADC_Stop(m_gameSettings->adc);
 
   return pin;
+}
+
+STATIC uint32_t _calculate_game_speed() {
+  int speedIncrease = 0;
+
+  speedIncrease = m_level * m_gameSettings->levelIncrement;
+  if (speedIncrease >= m_gameSettings->startSpeed) {
+    return m_gameSettings->levelIncrement;
+  }
+  return m_gameSettings->startSpeed - speedIncrease;
 }
