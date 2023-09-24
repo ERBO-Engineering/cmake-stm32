@@ -47,3 +47,37 @@ void test_LED_CONTROLLER_set_led_with_invalid_pin(void) {
   // Assert that the function returns -1 for a invalid pin.
   TEST_ASSERT_EQUAL(-1, result);
 }
+
+void test_LED_CONTROLLER_set_led_turn_on(void) {
+  uint16_t pin = 5;
+  GPIO_TypeDef *gpioDef = (GPIO_TypeDef *)10;
+  struct LedPinMapping pinMapping[LED_COUNT] = {};
+
+  pinMapping[0].port = gpioDef;
+  pinMapping[0].pin = pin;
+
+  // Mocking HAL_GPIO_WritePin
+  HAL_GPIO_WritePin_Expect(gpioDef, pin, GPIO_PIN_SET);
+
+  int result = LED_CONTROLLER_turn_on(pinMapping, LED_COUNT, pin);
+
+  // Assert that the function returns 0 for a valid pin.
+  TEST_ASSERT_EQUAL(0, result);
+}
+
+void test_LED_CONTROLLER_set_led_turn_off(void) {
+  uint16_t pin = 5;
+  GPIO_TypeDef *gpioDef = (GPIO_TypeDef *)10;
+  struct LedPinMapping pinMapping[LED_COUNT] = {};
+
+  pinMapping[0].port = gpioDef;
+  pinMapping[0].pin = pin;
+
+  // Mocking HAL_GPIO_WritePin
+  HAL_GPIO_WritePin_Expect(gpioDef, pin, GPIO_PIN_RESET);
+
+  int result = LED_CONTROLLER_turn_off(pinMapping, LED_COUNT, pin);
+
+  // Assert that the function returns 0 for a valid pin.
+  TEST_ASSERT_EQUAL(0, result);
+}

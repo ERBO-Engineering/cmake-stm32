@@ -51,6 +51,59 @@ void test_LED_PATTERN_create_circle() {
   TEST_ASSERT_EQUAL(expectedPatternCount, patternCount);
   TEST_ASSERT_EQUAL_MEMORY(expectedBuffer, buffer, sizeof(expectedBuffer));
 }
+
+// -- LED_PATTERN_create_blink() --
+void test_LED_PATTERN_create_blink() {
+  struct LedPatternStep buffer[40] = {};
+  int expectedPatternCount = LED_COUNT * 2 + 2; // leds off, wait, leds on, wait
+  struct LedPatternStep expectedBuffer[10] = {
+      {.pin = pinMapping[0].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+      {.pin = pinMapping[1].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+      {.pin = pinMapping[2].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+      {.pin = pinMapping[3].pin, .state = GPIO_PIN_RESET, .sleepTime = 0},
+
+      {.sleepTime = 100},
+
+      {.pin = pinMapping[0].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+      {.pin = pinMapping[1].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+      {.pin = pinMapping[2].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+      {.pin = pinMapping[3].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+
+      {.sleepTime = 100},
+
+  };
+
+  int patternCount = LED_PATTERN_create_blink(pinMapping, LED_COUNT, 100,
+                                              buffer, sizeof(buffer));
+
+  TEST_ASSERT_EQUAL(expectedPatternCount, patternCount);
+  TEST_ASSERT_EQUAL_MEMORY(expectedBuffer, buffer, sizeof(expectedBuffer));
+}
+
+// -- LED_PATTERN_create_blink() --
+void test_LED_PATTERN_create_countdown() {
+  struct LedPatternStep buffer[40] = {};
+  int expectedPatternCount = LED_COUNT * 2; // turn on all, turn off one by one
+  struct LedPatternStep expectedBuffer[10] = {
+      {.pin = pinMapping[0].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+      {.pin = pinMapping[1].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+      {.pin = pinMapping[2].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+      {.pin = pinMapping[3].pin, .state = GPIO_PIN_SET, .sleepTime = 0},
+
+      {.pin = pinMapping[3].pin, .state = GPIO_PIN_RESET, .sleepTime = 100},
+      {.pin = pinMapping[2].pin, .state = GPIO_PIN_RESET, .sleepTime = 100},
+      {.pin = pinMapping[1].pin, .state = GPIO_PIN_RESET, .sleepTime = 100},
+      {.pin = pinMapping[0].pin, .state = GPIO_PIN_RESET, .sleepTime = 100},
+
+  };
+
+  int patternCount = LED_PATTERN_create_countdown(pinMapping, LED_COUNT, 100,
+                                                  buffer, sizeof(buffer));
+
+  TEST_ASSERT_EQUAL(expectedPatternCount, patternCount);
+  TEST_ASSERT_EQUAL_MEMORY(expectedBuffer, buffer, sizeof(expectedBuffer));
+}
+
 // -- LED_PATTERN_play_pattern() --
 
 // Play a small pattern and verify if set_led calls and delay calls are correct
