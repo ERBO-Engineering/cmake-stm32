@@ -20,6 +20,10 @@
 #ifndef __STM32F4xx_ADC_H
 #define __STM32F4xx_ADC_H
 
+#ifdef TEST
+#include <stm32f4xx_hal_dma.h>
+#endif
+
 #ifdef __cplusplus
  extern "C" {
 #endif
