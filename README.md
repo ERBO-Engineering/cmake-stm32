@@ -34,7 +34,7 @@ https://github.com/ObKo/stm32-cmake
 Made for the blogpost "Unlock Embedded Software Testing with Ceedling & VSCode"
 Where we step by step guide you through the process of setting up the ceedling test framework and writing your first tests.
 
-[Unlock Embedded Software Testing with Ceedling & VSCode]()
+[Unlock Embedded Software Testing with Ceedling & VSCode](https://medium.com/@erbo-engineering/unlock-embedded-software-testing-with-ceedling-vscode-773657f2cf10)
 
 ![gcov code coverage](images/gcov.png)
 
