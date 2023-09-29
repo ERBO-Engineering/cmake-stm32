@@ -13,9 +13,9 @@
 #include "mock_led_controller.h"
 #include "mock_led_pattern.h"
 
-uint32_t m_currentState;
-uint32_t m_level;
-uint16_t m_selectedPin;
+extern uint32_t m_currentState;
+extern uint32_t m_level;
+extern uint16_t m_selectedPin;
 
 // prototypes for private functions you want to test
 void _handle_input();
