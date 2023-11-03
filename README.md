@@ -1,6 +1,6 @@
 ![](images/header.png)
 
-# CMAKE stm32F4 example 2022
+# CMAKE stm32F4 example 2022 [![Ceedling Test and Code Coverage](https://github.com/ERBO-Engineering/cmake-stm32/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/ERBO-Engineering/cmake-stm32/actions/workflows/main.yml)
 
 **To build install:**
 
