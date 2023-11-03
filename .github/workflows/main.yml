@@ -1,0 +1,32 @@
+name: Ceedling Test and Code Coverage
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+
+      - name: Install Ceedling
+        run: gem install ceedling
+
+      - name: Run Tests and Generate JUnit Report
+        run: |
+          ceedling test:all
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure()
+        with:
+          detailed_summary: true
+          include_passed: true
+          report_paths: "build/artifacts/test/report_junit.xml"
